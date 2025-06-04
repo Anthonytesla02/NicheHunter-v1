@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - YouTube Shorts Niche Analyzer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="display-5">
+                <i class="fas fa-chart-line text-primary me-2"></i>
+                Dashboard
+            </h1>
+            <a href="{{ url_for('analyze') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>Start New Analysis
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card bg-gradient text-white border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="card-body p-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h2 class="card-title h3 mb-3">Discover Viral YouTube Shorts Niches</h2>
+                        <p class="card-text lead mb-4">
+                            Find untapped, monetizable YouTube Shorts niches with high viral potential. 
+                            Our AI-powered analysis identifies faceless content opportunities with proven performance metrics.
+                        </p>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-robot fa-2x me-3 opacity-75"></i>
+                                    <div>
+                                        <div class="fw-bold">AI-Powered</div>
+                                        <small class="opacity-75">Face detection & NLP clustering</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-trending-up fa-2x me-3 opacity-75"></i>
+                                    <div>
+                                        <div class="fw-bold">Viral Metrics</div>
+                                        <small class="opacity-75">50K+ views/day threshold</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-eye-slash fa-2x me-3 opacity-75"></i>
+                                    <div>
+                                        <div class="fw-bold">Faceless Focus</div>
+                                        <small class="opacity-75">Scalable content formats</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <i class="fab fa-youtube fa-5x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="row mb-5">
+    <div class="col-md-3">
+        <div class="card text-center border-0 bg-body-secondary">
+            <div class="card-body">
+                <i class="fas fa-video fa-2x text-primary mb-3"></i>
+                <h5 class="card-title">Shorts Only</h5>
+                <p class="card-text small text-muted">Videos under 60 seconds</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-0 bg-body-secondary">
+            <div class="card-body">
+                <i class="fas fa-fire fa-2x text-danger mb-3"></i>
+                <h5 class="card-title">Viral Threshold</h5>
+                <p class="card-text small text-muted">50,000+ views/day</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-0 bg-body-secondary">
+            <div class="card-body">
+                <i class="fas fa-calendar-alt fa-2x text-success mb-3"></i>
+                <h5 class="card-title">Fresh Content</h5>
+                <p class="card-text small text-muted">Last 7 days</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-0 bg-body-secondary">
+            <div class="card-body">
+                <i class="fas fa-user-secret fa-2x text-warning mb-3"></i>
+                <h5 class="card-title">Faceless</h5>
+                <p class="card-text small text-muted">Scalable formats</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Sessions -->
+{% if recent_sessions %}
+<div class="row">
+    <div class="col-12">
+        <h3 class="mb-4">
+            <i class="fas fa-history me-2"></i>Recent Analysis Sessions
+        </h3>
+        
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Session Name</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Videos</th>
+                        <th>Niches</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in recent_sessions %}
+                    <tr>
+                        <td>
+                            <div class="fw-bold">{{ session.session_name }}</div>
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {{ session.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                        </td>
+                        <td>
+                            {% if session.status == 'completed' %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>Completed
+                                </span>
+                            {% elif session.status == 'running' %}
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-spinner fa-spin me-1"></i>Running
+                                </span>
+                            {% elif session.status == 'failed' %}
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times me-1"></i>Failed
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-clock me-1"></i>Pending
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="fw-bold">{{ session.total_videos_analyzed or 0 }}</span>
+                        </td>
+                        <td>
+                            <span class="fw-bold">{{ session.total_niches_identified or 0 }}</span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('results', session_id=session.id) }}" 
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i>View Results
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="{{ url_for('sessions') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-list me-2"></i>View All Sessions
+            </a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <div class="text-center py-5">
+            <i class="fas fa-chart-line fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted">No Analysis Sessions Yet</h4>
+            <p class="text-muted mb-4">Start your first analysis to discover viral YouTube Shorts niches.</p>
+            <a href="{{ url_for('analyze') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Start First Analysis
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- How It Works -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h3 class="mb-4 text-center">
+            <i class="fas fa-cogs me-2"></i>How It Works
+        </h3>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card border-0 bg-body-secondary h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fs-4 fw-bold">1</span>
+                        </div>
+                        <h6 class="card-title">Search & Filter</h6>
+                        <p class="card-text small text-muted">
+                            Search YouTube for recent Shorts using multiple viral keywords and apply strict performance filters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-body-secondary h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fs-4 fw-bold">2</span>
+                        </div>
+                        <h6 class="card-title">Face Detection</h6>
+                        <p class="card-text small text-muted">
+                            Use OpenCV to identify and filter out videos with faces, focusing on scalable faceless content.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-body-secondary h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fs-4 fw-bold">3</span>
+                        </div>
+                        <h6 class="card-title">NLP Clustering</h6>
+                        <p class="card-text small text-muted">
+                            Group similar content using advanced NLP to identify distinct, profitable niches.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-body-secondary h-100">
+                    <div class="card-body text-center">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fs-4 fw-bold">4</span>
+                        </div>
+                        <h6 class="card-title">Rank & Export</h6>
+                        <p class="card-text small text-muted">
+                            Rank niches by viral potential and export detailed insights for immediate action.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

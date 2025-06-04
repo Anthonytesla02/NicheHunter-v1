@@ -1,0 +1,81 @@
+Tool Objective:
+
+Identify **YouTube Shorts** niches with high viral potential by scanning and evaluating short-form videos based on strict performance, content-style, and formatting criteria — especially **faceless** formats that are **replicable and scalable**.
+
+---
+
+✅ Core Functionality:
+
+### 1. Filtering Criteria for Viral Faceless Shorts:
+- ✅ **Only include YouTube Shorts**: videos **< 60 seconds**.
+- ✅ **Published in the last 1–7 days** (adjustable).
+- ✅ **Must be gaining at least 50,000 views/day**, or **2x view count growth daily**.
+- ✅ **Exclude**: music videos, motivational speech clips, or generic gaming content (unless it’s a new trending format).
+- ✅ **Faceless Filter**:
+  - Use face detection on **video thumbnails** (OpenCV or Google Vision API).
+  - Filter out channels where **>10% of thumbnails include faces**.
+  - Optionally scan titles/descriptions for terms like “voiceover,” “animation,” “text,” or “AI,” to reinforce faceless scoring.
+
+### 2. Channel Quality Criteria:
+- ✅ **High Monthly Views**: Estimated **10M+ views/month** (from total views and upload date).
+- ✅ **Low Content Volume**: Channel should have **< 20 videos total**.
+- ✅ **Recent Channel Age**: Channel must be **less than 30 days old**.
+- ✅ **Strong Per-Short Performance**: Each video should average **≥50K views within 7 days**.
+- ✅ **Consistent Uploading**: **≥ 4 uploads/week**.
+
+> ⚙️ All criteria above should be user-adjustable through config settings or CLI parameters.
+
+---
+
+📊 3. Viral Score Calculation:
+For each qualifying channel/video, calculate a **Viral Score** using:
+- Views/day since upload
+- View acceleration rate (today’s growth vs. initial day)
+- Engagement ratio (likes + comments / views)
+- % of videos with >50K views
+- Facelessness confidence score
+
+---
+
+📦 4. Output Results:
+Group and rank by **niche/topic clusters** using tags, titles, and NLP keyword similarity (e.g., spaCy or transformers). Output Top 10 Niches:
+
+For each niche group, display:
+- Niche/topic name
+- Number of qualifying viral videos
+- Avg views/day
+- Avg engagement ratio
+- Channel names (with faceless flag and upload frequency)
+- Links to top 3 videos
+- Recurring keywords, phrases, or tags in titles/descriptions
+
+---
+
+📤 5. Output Format:
+- Export full results to **CSV** (niches + channels + video stats)
+- Optional: Display results in a **simple Flask web interface** for browsing
+- Include **toggle for “faceless only” mode** (on by default)
+
+---
+
+🔍 6. Bonus Enhancements (if time permits):
+- Allow the user to enter a **seed keyword or topic** to focus the search (e.g., “AI facts” or “sports”).
+- Sort results by **content format niches** (e.g., reaction style, mobile game clips, quizzes, etc.)
+- Add real-time “monitor mode” that flags new viral uploads daily (like a trend radar).
+
+---
+
+🧠 Target Outcomes:
+- Discover **undiscovered YouTube Shorts formats** that are **scalable, faceless, and trending**.
+- Reveal **low-saturation, high-return content niches** ideal for automated content or voiceover-based Shorts.
+- Build viral channels or products before the market gets saturated.
+
+---
+
+🔧 Tech Stack:
+- **Python** (main language)
+- **YouTube Data API v3** (for video/channel stats)
+- **OpenCV** or **Google Vision API** (for face detection)
+- **spaCy** or **Transformers** (for keyword clustering & topic extraction)
+- **Flask** (optional web UI)
+- **Pandas** (for data analysis/export)

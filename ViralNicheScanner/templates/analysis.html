@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block title %}New Analysis - YouTube Shorts Niche Analyzer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="display-6 mb-4">
+            <i class="fas fa-search text-primary me-2"></i>
+            Configure New Analysis
+        </h1>
+    </div>
+</div>
+
+<form method="POST" id="analysisForm">
+    <div class="row">
+        <!-- Basic Settings -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-cog me-2"></i>Basic Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="session_name" class="form-label">Session Name</label>
+                        <input type="text" class="form-control" id="session_name" name="session_name" 
+                               value="" required>
+                        <div class="form-text">Give your analysis session a memorable name</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="search_query" class="form-label">Custom Search Query (Optional)</label>
+                        <input type="text" class="form-control" id="search_query" name="search_query" 
+                               placeholder="e.g., AI facts, psychology tips">
+                        <div class="form-text">Leave empty to use default viral keywords</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="days_back_to_search" class="form-label">Days Back to Search</label>
+                        <select class="form-select" id="days_back_to_search" name="days_back_to_search">
+                            <option value="1">Last 24 hours</option>
+                            <option value="3">Last 3 days</option>
+                            <option value="7" selected>Last 7 days</option>
+                            <option value="14">Last 14 days</option>
+                            <option value="30">Last 30 days</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="max_results_per_query" class="form-label">Max Results per Query</label>
+                        <select class="form-select" id="max_results_per_query" name="max_results_per_query">
+                            <option value="25">25 results</option>
+                            <option value="50" selected>50 results</option>
+                            <option value="100">100 results</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Video Filters -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-video me-2"></i>Video Filters
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="max_duration_seconds" class="form-label">Max Duration (seconds)</label>
+                        <input type="number" class="form-control" id="max_duration_seconds" name="max_duration_seconds" 
+                               value="{{ default_params.max_duration_seconds }}" min="1" max="300">
+                        <div class="form-text">YouTube Shorts are typically under 60 seconds</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="min_views_per_day" class="form-label">Minimum Views per Day</label>
+                        <input type="number" class="form-control" id="min_views_per_day" name="min_views_per_day" 
+                               value="{{ default_params.min_views_per_day }}" min="1000" step="1000">
+                        <div class="form-text">Filter for viral content with high daily view growth</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="min_video_views_7days" class="form-label">Minimum Views in 7 Days</label>
+                        <input type="number" class="form-control" id="min_video_views_7days" name="min_video_views_7days" 
+                               value="{{ default_params.min_video_views_7days }}" min="1000" step="1000">
+                        <div class="form-text">Ensure consistent performance threshold</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Channel Filters -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-users me-2"></i>Channel Quality Filters
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="min_monthly_views" class="form-label">Minimum Monthly Views</label>
+                        <input type="number" class="form-control" id="min_monthly_views" name="min_monthly_views" 
+                               value="{{ default_params.min_monthly_views }}" min="100000" step="100000">
+                        <div class="form-text">Channels must demonstrate strong monthly performance</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="max_channel_videos" class="form-label">Max Channel Videos</label>
+                        <input type="number" class="form-control" id="max_channel_videos" name="max_channel_videos" 
+                               value="{{ default_params.max_channel_videos }}" min="1" max="100">
+                        <div class="form-text">Focus on newer channels with less content</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="max_channel_age_days" class="form-label">Max Channel Age (days)</label>
+                        <input type="number" class="form-control" id="max_channel_age_days" name="max_channel_age_days" 
+                               value="{{ default_params.max_channel_age_days }}" min="1" max="365">
+                        <div class="form-text">Target newer channels with fresh approaches</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="min_weekly_uploads" class="form-label">Minimum Weekly Uploads</label>
+                        <input type="number" class="form-control" id="min_weekly_uploads" name="min_weekly_uploads" 
+                               value="{{ default_params.min_weekly_uploads }}" min="1" max="20">
+                        <div class="form-text">Consistent uploading indicates active channels</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Face Detection Settings -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-eye-slash me-2"></i>Face Detection Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="faceless_only" name="faceless_only" 
+                                   {{ 'checked' if default_params.faceless_only }}>
+                            <label class="form-check-label" for="faceless_only">
+                                <strong>Faceless Only Mode</strong>
+                            </label>
+                            <div class="form-text">Filter out content with visible faces for scalable formats</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="face_detection_threshold" class="form-label">Face Detection Threshold</label>
+                        <input type="range" class="form-range" id="face_detection_threshold" name="face_detection_threshold" 
+                               min="0.1" max="1.0" step="0.1" value="{{ default_params.face_detection_threshold }}">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">0.1 (Low)</small>
+                            <small class="text-muted">1.0 (High)</small>
+                        </div>
+                        <div class="form-text">Sensitivity for face detection (higher = stricter)</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="max_face_percentage" class="form-label">Max Face Percentage in Channel</label>
+                        <input type="number" class="form-control" id="max_face_percentage" name="max_face_percentage" 
+                               value="{{ default_params.max_face_percentage }}" min="0" max="100">
+                        <div class="form-text">Maximum % of videos with faces allowed per channel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popular Search Queries -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-fire me-2"></i>Popular Search Keywords
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">
+                        Click any keyword below to use it as your search query, or leave the custom field empty to search all popular keywords.
+                    </p>
+                    <div class="row g-2">
+                        {% for query in search_queries %}
+                        <div class="col-md-3 col-sm-4 col-6">
+                            <button type="button" class="btn btn-outline-secondary btn-sm w-100 keyword-btn" 
+                                    data-keyword="{{ query }}">
+                                {{ query }}
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-primary btn-lg" id="startAnalysisBtn">
+                    <i class="fas fa-rocket me-2"></i>Start Analysis
+                </button>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Analysis Preview -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-body-secondary">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>What Will This Analysis Do?
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-search text-primary me-3 mt-1"></i>
+                            <div>
+                                <div class="fw-bold">Video Discovery</div>
+                                <small class="text-muted">Search recent YouTube Shorts using viral keywords and performance filters</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-chart-line text-success me-3 mt-1"></i>
+                            <div>
+                                <div class="fw-bold">Performance Analysis</div>
+                                <small class="text-muted">Calculate viral scores, engagement rates, and growth metrics</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-layer-group text-warning me-3 mt-1"></i>
+                            <div>
+                                <div class="fw-bold">Niche Clustering</div>
+                                <small class="text-muted">Group similar content into actionable niches using AI</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Handle keyword selection
+document.querySelectorAll('.keyword-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const keyword = this.dataset.keyword;
+        document.getElementById('search_query').value = keyword;
+        
+        // Visual feedback
+        document.querySelectorAll('.keyword-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+// Update threshold display
+const thresholdSlider = document.getElementById('face_detection_threshold');
+const thresholdDisplay = document.createElement('div');
+thresholdDisplay.className = 'text-center mt-1 fw-bold';
+thresholdSlider.parentElement.appendChild(thresholdDisplay);
+
+function updateThresholdDisplay() {
+    thresholdDisplay.textContent = `Current: ${thresholdSlider.value}`;
+}
+
+thresholdSlider.addEventListener('input', updateThresholdDisplay);
+updateThresholdDisplay();
+
+// Form submission handling
+document.getElementById('analysisForm').addEventListener('submit', function(e) {
+    const btn = document.getElementById('startAnalysisBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Starting Analysis...';
+    btn.disabled = true;
+});
+
+// Auto-generate session name
+function generateSessionName() {
+    const now = new Date();
+    const timestamp = now.toISOString().slice(0, 19).replace(/[-:]/g, '').replace('T', '_');
+    return `Analysis_${timestamp}`;
+}
+
+// Set initial session name
+document.getElementById('session_name').value = generateSessionName();
+</script>
+{% endblock %}
